@@ -1,0 +1,17 @@
+
+.classpath
+.gradle/
+.project
+.settings/
+bin/
+
+build/
+deps
+*.xslx
+*.docx
+*.xslx
+
+
+data/brochure-combined
+data/brochure-templates
+data/printout-template

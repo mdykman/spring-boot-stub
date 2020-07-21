@@ -1,0 +1,708 @@
+swagger: '2.0'
+info:
+  description: Initial Setup for Swagger, better description coming in future versions
+  version: 1.0.0
+  title: Everest API
+  termsOfService: URL here
+  contact:
+    email: tracy@expertel.ca
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: localhost
+basePath: /v1
+tags:
+- name: Swagger
+  description: Location of swagger file
+  externalDocs:
+    description: Swagger File
+    url: http://www.pathToSwaggerFile
+- name: ERB
+  description: Schema Spy output for DB design layout
+  externalDocs:
+    description: HTML Output
+    url: http://www.pathToschemaspy
+- name: Doxygen
+  description: Genrated Doxygen documentation
+  externalDocs:
+    description: Html Output
+    url: http://www.pathToDoxygen
+schemes:
+- https
+- http
+paths:
+  /index:
+    get:
+      tags:
+        - api
+      summary: List of available ApiCalls
+      responses:
+        200:
+          description: List of services available
+  /languages:
+    get:
+      tags:
+      - language
+      summary: List of available Languages
+      operationId: getLanguages
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      responses:
+        200:
+          description: List of viable languages
+  /languagepack:
+    put:
+      tags:
+      - language
+      summary: Get Language Pack
+      operationId: getLanguagePack
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - name: lang
+          in: path
+          description: The Language pack requested
+          type: string
+          required: true
+        - name: version
+          in: path
+          description: The Version of the Language pack requested
+          type: string
+          required: true
+      responses:
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Pack not found
+        405:
+          description: Validation exception
+        200:
+          description: language pack
+  /surveys:
+    get:
+      tags:
+      - survey
+      summary: Get a list of all surveys for this subject
+      operationId: getSurveys
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+      responses:
+        '200':
+          description: List of survey objects
+               
+  /survey:
+    post:
+      tags:
+      - survey
+      summary: Add a new survey
+      operationId: addSurveys
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+      responses:
+        '200':
+          description: confirmation that survey was created
+  '/survey/{id}':
+    put:
+      tags:
+      - survey
+      summary: Replace survey
+      operationId: replaceSurveys
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the survey that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: confirmation that survey was replaced
+    patch:
+      tags:
+      - survey
+      summary: Update survey
+      operationId: updateSurveys
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the survey that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: confirmation that survey was updated
+    delete:
+      tags:
+      - survey
+      summary: delete survey
+      operationId: deleteSurveys
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the survey that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: confirmation that survey was deleted
+  '/survey/{id}/answers':
+    get:
+      tags:
+      - answers
+      summary: Get a list of all answers for a given survey for this subject
+      operationId: getAnswers
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the survey that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: List of answers objects
+    post:
+      tags:
+      - answers
+      summary: Add a new set of answers for this survey
+      operationId: addAnswers
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the survey that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that answers have been added
+  '/survey/{id}/answers/{aId}':
+    put:
+      tags:
+      - answers
+      summary: replace the answers for this survey
+      operationId: replaceAnswers
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the survey that is changing
+          type: integer
+          required: true
+        - in: path
+          name: aId
+          description: id of the Answer that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that answers have been replaced
+    patch:
+      tags:
+      - answers
+      summary: update the answers for this survey
+      operationId: updateAnswers
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the survey that is changing
+          type: integer
+          required: true
+        - in: path
+          name: aId
+          description: id of the Answer that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that answers have been updated
+    delete:
+      tags:
+      - answers
+      summary: delete the answers for this survey
+      operationId: deleteAnswers
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the survey that is changing
+          type: integer
+          required: true
+        - in: path
+          name: aId
+          description: id of the Answer that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that answers have been deleted
+  /events:
+    get:
+      tags:
+      - event
+      summary: Get a list of all Events for a given subject
+      operationId: getEvents
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+      responses:
+        '200':
+          description: List of Events objects
+          schema:
+            $ref: '#/definitions/Event'
+  /event:
+    post:
+      tags:
+      - event
+      summary: Add a new Event for this subject
+      operationId: addEvent
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+      responses:
+        '200':
+          description: Confirmation that Event have been added
+  '/event/{id}':
+    get:
+      tags:
+      - event
+      summary: Get an Event with this id for this subject
+      operationId: getEvent
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the Event that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that Event have been added
+    put:
+      tags:
+      - event
+      summary: Replace and existing Event for this subject
+      operationId: replaceEvent
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the Event that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that Event have been replaced
+    patch:
+      tags:
+      - event
+      summary: Update an Event for this subject
+      operationId: updateEvent
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the Event that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that Event have been Updated
+    delete:
+      tags:
+      - event
+      summary: Delete an Event for this subject
+      operationId: deleteEvent
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the Event that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that Event have been deleted
+  '/event/{id}/cancel':
+    patch:
+      tags:
+      - event
+      summary: Cancel an Event for this subject
+      operationId: cancelEvent
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the Event that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that Event have been Cancelled
+  /schedule:
+    get:
+      tags:
+      - schedule
+      summary: Get a list of all Schedules for a given subject
+      operationId: getSchedule
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+      responses:
+        '200':
+          description: List of Schedule objects
+          schema:
+            $ref: '#/definitions/Schedule'
+    post:
+      tags:
+      - schedule
+      summary: Add a new Schedule for this subject
+      operationId: addSchedule
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+      responses:
+        '200':
+          description: Confirmation that Schedule have been added
+  '/schedule/{id}':
+    get:
+      tags:
+      - schedule
+      summary: Get a Schedule by ID for a given subject
+      operationId: getScheduleById
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the Schedule that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Schedule Object
+          schema:
+            $ref: '#/definitions/Event'
+    put:
+      tags:
+      - event
+      summary: replace a Schedule for this subject
+      operationId: replaceSchedule
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the Schedule that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that Schedule have been Replaced
+    patch:
+      tags:
+      - event
+      summary: Update a schedule for this subject
+      operationId: updateSchedule
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the schedule that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that Schedule have been Updated
+    delete:
+      tags:
+      - event
+      summary: Delete a Schedule for this subject
+      operationId: deleteSchedule
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the Schedule that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that Schedule have been Deleted
+  '/schedule/{id}/cancel':
+    patch:
+      tags:
+      - event
+      summary: Cancel a Schedule for this subject
+      operationId: cancelSchedule
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+        - in: path
+          name: id
+          description: id of the Schedule that is changing
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: Confirmation that Schedule have been Cancelled
+  '/schedule/cancelall':
+    patch:
+      tags:
+      - event
+      summary: Cancel all Schedules for this subject
+      operationId: cancelAllSchedules
+      consumes:
+        - application/x-www-form-urlencoded
+        - text/plain; charset=utf-8
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Everest-Auth
+          type: string
+          description: JWT that contains data about the current subject
+      responses:
+        '200':
+          description: Confirmation that all Schedules have been Cancelled
+definitions:
+  Meta:
+    properties:
+      currentTime:
+        type: string
+  Event: 
+    properties:
+      meta:
+        $ref: '#/definitions/Meta'
+      payload:
+        type: object
+        properties:
+          id:
+            type: integer
+          userId:
+            type: string
+          eventDate:
+            type: string
+          eventType:
+            type: string
+          created:
+            type: string
+          modified:
+            type: string
+          canceled:
+            type: integer
+  Schedule: 
+    properties:
+      meta:
+        $ref: '#/definitions/Meta'
+      payload:
+        type: object
+        properties:
+          id:
+            type: integer
+          userId:
+            type: string
+          surveyid:
+            type: integer
+          answersId:
+            type: integer
+          created:
+            type: string
+          modified:
+            type: string
+          canceled:
+            type: integer

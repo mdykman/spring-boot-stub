@@ -1,0 +1,106 @@
+plugins { id 'org.springframework.boot' version '1.5.9.RELEASE' }
+
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'war'
+
+
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use 'jcenter' for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+	maven {
+		url 'https://maven.google.com/'
+	}
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+tasks.withType(JavaCompile) { options.compilerArgs << '-parameters' }
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    // The production code uses the SLF4J logging API at compile time
+    compile 'org.slf4j:slf4j-api:1.7.25'
+	
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+	// compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.4.Final'
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-hikaricp
+	// compile group: 'org.hibernate', name: 'hibernate-hikaricp', version: '5.4.4.Final'
+
+	// https://mvnrepository.com/artifact/org.springframework/spring-core
+	// compile group: 'org.springframework', name: 'spring-core', version: '5.1.9.RELEASE'
+
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.8.RELEASE'
+
+	// https://mvnrepository.com/artifact/org.springframework/spring-test
+	testCompile group: 'org.springframework', name: 'spring-test', version: '4.3.13.RELEASE'
+	
+	// this is me trying to get a clean war
+	
+			providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+			implementation  'org.springframework.boot:spring-boot-starter-web'
+	
+//	compile ('org.springframework.boot:spring-boot-starter-web:2.1.8.RELEASE') {
+//			exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+//		}
+		 
+	//	implementation	 ('org.springframework.boot:spring-boot-starter-web') {
+	//		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+	//	}
+		
+	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.45'
+			
+	// https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+	compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.0'
+	// https://mvnrepository.com/artifact/javax.validation/validation-api
+	compile group: 'javax.validation', name: 'validation-api', version: '2.0.0.Final'
+	
+		
+	compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: '4.0.2'
+	compile group: 'io.dropwizard.metrics', name: 'metrics-annotation', version: '4.0.2'
+	compile group: 'io.dropwizard.metrics', name: 'metrics-servlet', version: '4.0.2'
+	compile group: 'io.dropwizard.metrics', name: 'metrics-jmx', version: '4.0.2'
+
+	//compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.10.7'
+	compile 'io.jsonwebtoken:jjwt-api:0.10.7'
+    runtime 'io.jsonwebtoken:jjwt-impl:0.10.7',
+            // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
+            //'org.bouncycastle:bcprov-jdk15on:1.60',
+            'io.jsonwebtoken:jjwt-jackson:0.10.7'
+
+			// https://mvnrepository.com/artifact/com.google.firebase/firebase-messaging
+	//compile group: 'com.google.firebase', name: 'firebase-messaging', version: '20.0.0'
+	// https://mvnrepository.com/artifact/com.google.firebase/firebase-core
+	// compile group: 'com.google.firebase', name: 'firebase-core', version: '17.2.0'
+	// https://mvnrepository.com/artifact/com.google.firebase/firebase-admin
+	compile group: 'com.google.firebase', name: 'firebase-admin', version: '6.10.0'
+	// https://mvnrepository.com/artifact/org.json/json
+//	compile group: 'org.json', name: 'json', version: '20190722'
+	
+	compile files('libs/ojdbc7.jar')
+	
+	// https://mvnrepository.com/artifact/commons-io/commons-io
+	compile group: 'commons-io', name: 'commons-io', version: '2.6'
+	
+// yank the oracle JDBC driver locally as it connot be pulled from public  maven service for licencing reasons
+	// it was provided by the client from this address - https://www.ecrscorp.com/files/ojdbc7.jar
+
+	testCompile 'junit:junit:4.12'
+	
+}
+
+war {
+	archiveName = 'ediary.war'
+}
+
+springBoot {
+	mainClass = 'com.everest.survey.service.SurveyApplication'
+}
