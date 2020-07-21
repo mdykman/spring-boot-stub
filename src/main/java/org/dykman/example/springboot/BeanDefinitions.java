@@ -43,13 +43,6 @@ public class BeanDefinitions {
 
 
 
-	@Bean("jwtManager")
-	public JwtManager getJwtManager() {
-		return new JwtManager();
-	}
-
-
-
 
 	@Bean("metricRegistry")
 	@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)

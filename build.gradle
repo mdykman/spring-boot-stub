@@ -98,9 +98,9 @@ dependencies {
 }
 
 war {
-	archiveName = 'ediary.war'
+	archiveName = 'webapp.war'
 }
 
 springBoot {
-	mainClass = 'com.everest.survey.service.SurveyApplication'
+	mainClass = 'org.dykman.example.springboot.SBStubApplication'
 }

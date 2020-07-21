@@ -23,7 +23,7 @@ public class JwtManager {
 	private static final Key key = initKey();
 	
 	public static final String HTTP_HEADER="X-JWT-Auth";
-	public static final String HTTP_HEADER_ADMIN="X-Everest-Auth-Admin";
+	public static final String HTTP_HEADER_ADMIN="X-JWT-Auth-Admin";
 	
 	public static final int JWT_EXPIRY_DAYS = 90;
 	public JwtManager() {

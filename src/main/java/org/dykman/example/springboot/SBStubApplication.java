@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 
 // add any packages in which you intend to declare @Bean or @Service or @Configuration on lcasses or methods 
-@ComponentScan({ "com.everest.survey", "com.everest.survey.service" })
+@ComponentScan({ "org.dykman.example", "org.dykman.example.service" })
 
 @SpringBootApplication
 public class SBStubApplication extends SpringBootServletInitializer {
