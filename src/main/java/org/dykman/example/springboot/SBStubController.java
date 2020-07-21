@@ -28,7 +28,6 @@ import javax.websocket.server.PathParam;
 
 import org.dykman.example.DbUtil;
 import org.dykman.example.ExampleService;
-import org.dykman.example.JwtManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +73,8 @@ import io.jsonwebtoken.JwtException;
 @ControllerAdvice()
 public class SBStubController {
 	public static final String TYPE_JSON = "application/json;charset=utf8";
-	public static final String JWT_TOKEN = JwtManager.HTTP_HEADER;
-	public static final String ADMIN_JWT_TOKEN = JwtManager.HTTP_HEADER_ADMIN;
+//	public static final String JWT_TOKEN = JwtManager.HTTP_HEADER;
+//	public static final String ADMIN_JWT_TOKEN = JwtManager.HTTP_HEADER_ADMIN;
 	private final static String ADMIN_USER_ID = "EDIARYADM";
 	public static final String ACCESS_CONTROL_MAX_AGE = "86400";
 	public static final String REPORTTABLE = "report120";
@@ -106,7 +105,7 @@ public class SBStubController {
 		headers.add("Access-Control-Allow-Origin", "*");
 		headers.add("Access-Control-Allow-Methods", "POST,GET,PUT,PATCH,DELETE,OPTIONS");
 		headers.add("Access-Control-Max-Age", ACCESS_CONTROL_MAX_AGE);
-		headers.add("Access-Control-Allow-Headers", JwtManager.HTTP_HEADER + ", " + JwtManager.HTTP_HEADER_ADMIN);
+//		headers.add("Access-Control-Allow-Headers", JwtManager.HTTP_HEADER + ", " + JwtManager.HTTP_HEADER_ADMIN);
 
 		return new ResponseEntity<Object>("",headers, HttpStatus.OK);
 	}
@@ -123,14 +122,11 @@ public class SBStubController {
 	
 	
 	@GetMapping(name = "answers", path = "/example/{id}", produces = TYPE_JSON)
-	public ResponseEntity<Object> getAnswers(@PathVariable("id") String userId,
-			@RequestHeader(value = JWT_TOKEN) String jwtToken) throws Exception {
+	public ResponseEntity<Object> simpleGetEndpoint(@PathVariable("id") String userId) throws Exception {
 		return instrument("survey", () -> {
 
 			DataSource ds = context.getBean("datasource", DataSource.class);
 
-			JwtManager jwtManager = context.getBean(JwtManager.class, "jwtManager");
-			String subject_name = jwtManager.getSubjectfromJwt(jwtToken);
 
 			try (Connection c = ds.getConnection()) {
 				int i = Integer.parseInt(userId);
@@ -289,10 +285,6 @@ public class SBStubController {
 			
 			// CORS header
 			HttpHeaders hp = new HttpHeaders();
-			hp.add("Access-Control-Allow-Origin", "*");
-			hp.add("Access-Control-Allow-Methods", "POST,GET,PUT,PATCH,DELETE,OPTIONS");
-			hp.add("Access-Control-Max-Age", ACCESS_CONTROL_MAX_AGE);
-			hp.add("Access-Control-Allow-Headers", JwtManager.HTTP_HEADER + ", " + JwtManager.HTTP_HEADER_ADMIN);
 			
 			return new ResponseEntity<>(o, hp, HttpStatus.OK);
 			

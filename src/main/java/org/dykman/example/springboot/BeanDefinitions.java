@@ -1,31 +1,19 @@
 package org.dykman.example.springboot;
 
-import java.sql.SQLException;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
-import org.dykman.example.ExampleService;
-import org.dykman.example.JwtManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.jmx.JmxReporter;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import com.zaxxer.hikari.HikariDataSource;
 
-import io.jsonwebtoken.Claims;
 
 
 // you can have as many @Configuration classes as you like
@@ -53,20 +41,6 @@ public class BeanDefinitions {
 		return metrics;
 	}
 
-	@Bean(name = "jwttoken")
-	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.NO)
-	public Claims jtwToken(JwtManager jwtManager) throws Exception {
-		HttpServletRequest curRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-				.getRequest();
-		String token = curRequest.getHeader(jwtManager.getHttpHeader());
-		if (token == null)
-			return null;
-		Date expiryDate = jwtManager.getExpirationDateFromToken(token);
-		if (expiryDate != null && new Date().before(expiryDate)) {
-			return null;
-		}
-		return jwtManager.getAllClaimsFromToken(token);
-	}
 
 	@Bean(name = "datasource", destroyMethod = "close")
 	@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
