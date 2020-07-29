@@ -60,7 +60,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
-import com.mysql.jdbc.log.Log;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

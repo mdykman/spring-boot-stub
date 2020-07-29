@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Scope;
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.jmx.JmxReporter;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 
@@ -24,12 +24,6 @@ public class BeanDefinitions {
 	Logger LOG = LoggerFactory.getLogger(BeanDefinitions.class);
 	// @Autowired
 	// private ApplicationContext context;
-
-	public BeanDefinitions() {
-		// TODO Auto-generated constructor stub
-	}
-
-
 
 
 	@Bean("metricRegistry")
@@ -47,24 +41,20 @@ public class BeanDefinitions {
 	// @Lazy
 	public DataSource dataSource(MetricRegistry mr) {
 
-		HikariDataSource ds = new HikariDataSource();
+		HikariConfig hc = new HikariConfig();
 		System.out.println(String.format("initializing native the datasource"));
 		String user = System.getenv("DB_USER");
 		String password = System.getenv("DB_PASSWORD");
 		String host = System.getenv("DB_HOST");
 		String port = System.getenv("DB_PORT");
 		String schema = System.getenv("DB_SCHEMA");
+		if (port == null)
+			port = "3306";
 
-		if (System.getenv("USE_MYSQL") != null) {
-			if (port == null)
-				port = "3306";
-			MysqlDataSource mds = new MysqlDataSource();
-
-			mds.setUser(user);
-			mds.setPassword(password);
-			mds.setURL("jdbc:mysql://" + host + ":" + port + "/" + schema);
-			ds.setDataSource(mds);
-		}
+		hc.setUsername(user);
+		hc.setPassword(password);
+		hc.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + schema);
+		HikariDataSource ds = new HikariDataSource(hc);
 		ds.setMinimumIdle(2);
 		ds.setMaximumPoolSize(10);
 

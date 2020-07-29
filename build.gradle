@@ -29,10 +29,6 @@ dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.25'
 	
-	// https://mvnrepository.com/artifact/org.hibernate/hibernate-core
-	// compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.4.Final'
-	// https://mvnrepository.com/artifact/org.hibernate/hibernate-hikaricp
-	// compile group: 'org.hibernate', name: 'hibernate-hikaricp', version: '5.4.4.Final'
 
 	// https://mvnrepository.com/artifact/org.springframework/spring-core
 	// compile group: 'org.springframework', name: 'spring-core', version: '5.1.9.RELEASE'
@@ -56,10 +52,10 @@ dependencies {
 	//		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
 	//	}
 		
-	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.45'
+	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'
 			
 	// https://mvnrepository.com/artifact/com.zaxxer/HikariCP
-	compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.0'
+	compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.5'
 	// https://mvnrepository.com/artifact/javax.validation/validation-api
 	compile group: 'javax.validation', name: 'validation-api', version: '2.0.0.Final'
 	
@@ -84,8 +80,6 @@ dependencies {
 	compile group: 'com.google.firebase', name: 'firebase-admin', version: '6.10.0'
 	// https://mvnrepository.com/artifact/org.json/json
 //	compile group: 'org.json', name: 'json', version: '20190722'
-	
-	compile files('libs/ojdbc7.jar')
 	
 	// https://mvnrepository.com/artifact/commons-io/commons-io
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
